@@ -2,16 +2,15 @@ module Wicket
   module Commands
     class L < Command
 
-      class << self
-        def arg_count
-          2
-        end
+      def self.arg_count
+        2
       end
 
-      def initialize(absolute,x,y)
+      def initialize(absolute,cursor_start,x,y)
         @absolute = absolute
         @x = x
         @y = y
+        @cursor_start = cursor_start
       end
 
       def coordinates

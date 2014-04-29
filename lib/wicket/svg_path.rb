@@ -1,24 +1,36 @@
 module Wicket
   class SVGPath
-    attr_reader :text
+    attr_reader :text, :subpaths
     def initialize(text)
       @text = text
-    end
-
-    def to_polygon
+      @subpaths = []
       parse
     end
 
+    def to_polygon
+      poly = subpaths.first.to_polygon
+      "POLYGON#{poly}"
+    end
+
     def to_multipolygon
-      
+      polys = subpaths.map(&:to_polygon).join(",")
+      "MULTIPOLYGON(#{polys})"
     end
 
     private
 
       def parse
-        @text.scan(/(?:([MmLlHhVvQqCcTtSsAaZz])([\d\.\,\-\s]+)*)/).map do |(code,arg_string)|
-          Command.from_code(code,arg_string)
+        commands = @text.scan(/(?:([MmLlHhVvQqCcTtSsAaZz])([\d\.\,\-\s]+)*)/)
+        commands_count = commands.count
+        commands.each_with_object(new_subpath).each_with_index do |((code,arg_string),subpath),index|
+          subpath.add_command( *Command.from_code(code,arg_string,subpath) )
+          subpath = new_subpath if (subpath.closed? && index < (commands_count - 1))
         end
+        @subpaths
+      end
+
+      def new_subpath
+        Subpath.new.tap {|s| @subpaths << s }
       end
 
       def group_by_subpath(parsed_result)
