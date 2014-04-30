@@ -7,16 +7,33 @@ module Wicket
         command_class = Commands.const_get(code.upcase) # get the class which handles this code
         absolute = (code.upcase == code) # is it uppercase?
         cursor_start = subpath.cursor_end # get the current position of the cursor
-        args = arg_string.scan(/(?:\-\s*)?\d+(?:\.\d+)?/).flatten # parse out the numerical arguments
-        args.each_slice(command_class.arg_count).map do |slice| # slice them according to the number the code takes
-          slice.map!{|arg| arg.gsub(/\s*/,'').to_f } # remove whitespace and turn into a float
-          command_class.new(absolute,cursor_start,*slice)
+        args = arg_string.to_s.scan(/(?:\-\s*)?\d+(?:\.\d+)?/).flatten # parse out the numerical arguments
+        if !args.empty?
+          args.each_slice(command_class.arg_count).map do |slice| # slice them according to the number the code takes
+            slice.map!{|arg| arg.gsub(/\s*/,'').to_f } # remove whitespace and turn into a float
+            command_class.new(absolute,cursor_start,*slice)
+          end
+        else
+          [command_class.new(absolute,cursor_start)]
         end
       end
+    end
+
+    def subpath=(subpath)
+      @subpath = subpath
     end
 
     def inspect
       "#<#{self.class.to_s} #{coordinates.map{|k,v|[k,v].join("=")}.join(",")}#{" abs" if @absolute}>"
     end
+
+    def to_wkt
+      inverse_values.join(" ")
+    end
+
+      private
+        def inverse_values
+          [cursor_end[:x], cursor_end[:y] * -1]
+        end
   end
 end

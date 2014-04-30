@@ -17,6 +17,14 @@ module Wicket
         {:x => @x, :y => @y}
       end
 
+      def cursor_end
+        if @absolute
+          coordinates
+        else
+          {:x => (@cursor_start[:x] + @x), :y => (@cursor_start[:y] + @y)}
+        end
+      end
+
     end
   end
 end

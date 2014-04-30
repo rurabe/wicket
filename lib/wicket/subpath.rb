@@ -5,8 +5,11 @@ module Wicket
       @commands = []
     end
 
-    def add_command(*commands)
-      @commands += commands
+    def add_command(*new_commands)
+      new_commands.each do |c|
+        c.subpath = self
+        @commands << c
+      end
     end
 
     def cursor_end
@@ -15,8 +18,12 @@ module Wicket
     end
 
     def closed?
-      return false unless last_command
-      first_command.cursor_end == last_command.cursor_end || last_command.is_a?(Commands::Z)
+      return false if @commands.empty?
+      if @commands.length > 1
+        first_command.cursor_end == last_command.cursor_end
+      else
+        first_command.cursor_start == first_command.cursor_end
+      end
     end
 
     def to_polygon
@@ -24,14 +31,12 @@ module Wicket
       "((#{vertices}))"
     end
 
-    private
+    def last_command
+      @commands.last
+    end
 
-      def last_command
-        @commands.last
-      end
-
-      def first_command
-        @commands.first
-      end
+    def first_command
+      @commands.first
+    end
   end
 end

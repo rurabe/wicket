@@ -21,12 +21,12 @@ module Wicket
 
       def parse
         commands = @text.scan(/(?:([MmLlHhVvQqCcTtSsAaZz])([\d\.\,\-\s]+)*)/)
-        commands_count = commands.count
-        commands.each_with_object(new_subpath).each_with_index do |((code,arg_string),subpath),index|
+        commands.each_with_index.inject(new_subpath) do |subpath,((code,arg_string),index)|
+          # pass the code and arguments for parsing into individual commands and add them to the subpath
           subpath.add_command( *Command.from_code(code,arg_string,subpath) )
-          subpath = new_subpath if (subpath.closed? && index < (commands_count - 1))
+          # if the path closes, provision a new subpath for future commands unless done
+          (subpath.closed? && (index + 1) < commands.length) ? new_subpath : subpath
         end
-        @subpaths
       end
 
       def new_subpath
