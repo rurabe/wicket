@@ -1,6 +1,6 @@
 module Wicket
   class SVGPath
-    attr_reader :text, :subpaths
+    attr_reader :text
     def initialize(text)
       @text = text
       @subpaths = []
@@ -8,12 +8,12 @@ module Wicket
     end
 
     def to_polygon
-      poly = subpaths.first.to_polygon
+      poly = @subpaths.first.to_polygon
       "POLYGON#{poly}"
     end
 
     def to_multipolygon
-      polys = subpaths.map(&:to_polygon).join(",")
+      polys = @subpaths.map(&:to_polygon).join(",")
       "MULTIPOLYGON(#{polys})"
     end
 
