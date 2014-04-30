@@ -1,5 +1,4 @@
 require "wicket/version"
-require "savage"
 require "wicket/svg_path"
 require "wicket/subpath"
 require "wicket/command"
