@@ -1,6 +1,6 @@
 # Wicket
 
-[![Build Status](https://travis-ci.org/rurabe/wicket.svg?branch=master)](https://travis-ci.org/rurabe/wicket)
+[![Build Status](https://travis-ci.org/rurabe/wicket.svg?branch=master)](https://travis-ci.org/rurabe/wicket)[![Code Climate](https://codeclimate.com/github/rurabe/wicket.png)](https://codeclimate.com/github/rurabe/wicket)
 
 Wicket is a pure Ruby library for the conversion of [SVG](http://en.wikipedia.org/wiki/Scalable_Vector_Graphics) path data into [Well Known Text (WKT)](http://en.wikipedia.org/wiki/Well-known_text). This is useful for cases when you have SVG input data, but want to store it in a spatial database that accepts WKT such as PostGIS.
 
