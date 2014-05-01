@@ -19,11 +19,7 @@ module Wicket
 
     def closed?
       return false if @commands.empty?
-      if @commands.length > 1
-        first_command.cursor_end == last_command.cursor_end
-      else
-        first_command.cursor_start == first_command.cursor_end
-      end
+      @commands.last.class == Commands::Z
     end
 
     def to_polygon

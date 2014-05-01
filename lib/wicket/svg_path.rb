@@ -32,15 +32,5 @@ module Wicket
       def new_subpath
         Subpath.new.tap {|s| @subpaths << s }
       end
-
-      def group_by_subpath(parsed_result)
-        parsed_result.each_with_object([]) do
-        end
-      end
-
-      def parse_arg_string(arg_string)
-        matches = arg_string.scan(/(?:\-\s*)?\d+(?:\.\d+)?/)
-        matches.flatten.map!{|arg| arg.gsub(/\s*/,'').to_f }
-      end
   end
 end

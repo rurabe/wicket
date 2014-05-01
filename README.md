@@ -8,6 +8,7 @@ Notable features include:
 - Translating line paths into WKT Polygons or Multipolygons
 - Accepting absolute or relative path commands
 - Inversing Y axis measurements (SVG y coordinates decrease as you go up)
+- Decimal math for increased accuracy
 
 Future possible features could include:
 - Translating curved paths
@@ -47,7 +48,7 @@ path.to_multipolygon
 
 - Wicket assumes that a move command (M or m) is part of the polygon edge. It just so happened that a lot of the data I was working with when creating this project was formatted that way. Eventually I believe this should not be the case and should be able to be toggled on as an option.
 - Polygons are assumed to have no holes, thus everything inside the path is part of the polygon.
-- Each polygon is represented by a subpath. A subpath continues until it is closed by a Z command or by moving or lineing to the starting coordinates. Multiple subpaths are represented as individual elements in `#to_multipolygon`, whereas only the first subpath is represented in `#to_polygon`. Make sure your data does not include multiple subpaths if using the `#to_polygon` method.
+- Each polygon is represented by a subpath. A subpath continues until it is closed by a Z command. Multiple subpaths are represented as individual elements in `#to_multipolygon`, whereas only the first subpath is represented in `#to_polygon`. Make sure your data does not include multiple subpaths if using the `#to_polygon` method.
 
 ## Contributing
 

@@ -1,3 +1,4 @@
+require "bigdecimal"
 require "wicket/version"
 require "wicket/svg_path"
 require "wicket/subpath"
