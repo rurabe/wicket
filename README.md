@@ -37,11 +37,20 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
+# one subpath
 path = Wicket::SVGPath.new("M10 10H20l10 10H10z")
 path.to_polygon 
   # => "POLYGON((10.0 -10.0,20.0 -10.0,30.0 -20.0,10.0 -20.0,10.0 -10.0))"
 path.to_multipolygon 
   # => "MULTIPOLYGON(((10.0 -10.0,30.0 -10.0,40.0 -10.0,50.0 -20.0,40.0 -20.0,10.0 -10.0)))"
+
+# two subpaths
+path = Wicket::SVGPath.new("M10 10H20l10 10H10z M100 100h10v10h-10z")
+path.to_polygon # ONLY THE FIRST SUBPATH!
+  # => "POLYGON((10.0 -10.0,20.0 -10.0,30.0 -20.0,10.0 -20.0,10.0 -10.0))"
+path.to_multipolygon # both subpaths
+  # => "MULTIPOLYGON(((10.0 -10.0,30.0 -10.0,40.0 -10.0,50.0 -20.0,40.0 -20.0,10.0 -10.0)),((100 -100,110 -100,110 -110,100 -110,100 -100)))
+
 ```
 
 ## Gotchas
