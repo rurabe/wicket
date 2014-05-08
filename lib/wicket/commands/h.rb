@@ -12,10 +12,9 @@ module Wicket
         @x = x
       end
 
-      def y
+      def absolute_y
         @cursor_start.y
       end
-
     end
   end
 end

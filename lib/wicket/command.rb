@@ -29,16 +29,20 @@ module Wicket
       @subpath = subpath
     end
 
+    def absolute_x
+      @absolute ? x : cursor_start.x + ( @x || 0 )
+    end
+
+    def absolute_y
+      @absolute ? y : cursor_start.y + ( @y || 0 )
+    end
+
     def cursor_end
-      if @absolute
-        Coordinate.new(x,y)
-      else
-        cursor_start.shift(@x,@y)
-      end
+      Coordinate.new(absolute_x,absolute_y)
     end
 
     def inspect
-      "#<#{self.class.to_s} #{coordinates.map{|k,v|[k,v].join("=")}.join(",")}#{" abs" if @absolute}>"
+      "#<#{self.class.to_s} x:#{@x},y:#{@y} #{" abs" if @absolute}>"
     end
 
     def to_wkt
