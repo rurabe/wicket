@@ -10,6 +10,7 @@ module Wicket
         c.subpath = self
         @commands << c
       end
+      self
     end
 
     def cursor_end

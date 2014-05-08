@@ -10,10 +10,6 @@ module Wicket
         @cursor_start = cursor_start
       end
 
-      def coordinates
-        {}
-      end
-
       def cursor_end
         @subpath.first_command.cursor_end
       end

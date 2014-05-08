@@ -12,16 +12,8 @@ module Wicket
         @y = y
       end
 
-      def coordinates
-        {:x => cursor_start[:x], :y => @y}
-      end
-
-      def cursor_end
-        if @absolute
-          coordinates
-        else
-          {:x => @cursor_start[:x], :y => (@cursor_start[:y] + @y)}
-        end
+      def x
+        cursor_start.x
       end
 
     end

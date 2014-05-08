@@ -113,7 +113,7 @@ module Wicket
       end
     end
 
-    context "the kitchen sink" do
+    context "the kitchen sink of linear paths" do
       let(:path){ SVGPath.new("M293.9214,533.9287l-6.3857-18.1475l3.9316-0.8857l6.0811,17.29L293.9214,533.9287z M287.5356,515.7813V496.5h3.9316v18.3955 L287.5356,515.7813z") }
       it "parses the first subpath to polygon" do
         expect(path.to_polygon).to eq("POLYGON((293.9214 -533.9287,287.5357 -515.7812,291.4673 -514.8955,297.5484 -532.1855,293.9214 -533.9287,293.9214 -533.9287))")
@@ -121,6 +121,23 @@ module Wicket
 
       it "parses both to a multipolygon" do
         expect(path.to_multipolygon).to eq("MULTIPOLYGON(((293.9214 -533.9287,287.5357 -515.7812,291.4673 -514.8955,297.5484 -532.1855,293.9214 -533.9287,293.9214 -533.9287)),((287.5356 -515.7813,287.5356 -496.5,291.4672 -496.5,291.4672 -514.8955,287.5356 -515.7813,287.5356 -515.7813)))")
+      end
+    end
+
+    context "relative c curves" do
+      let(:path){ SVGPath.new("M0 0,c0 200,200 200,200 0z") }
+
+      # it "parses the first subpath to polygon" do
+      #   expect(path.to_polygon).to eq("POLYGON((0 0,100 150,0 0))")
+      # end
+    end
+
+    context "a complex curve" do
+      let(:path){ SVGPath.new("M889.9277,494.0005c0,12.1528-0.8057,23.9614-2.3066,35.4341h10.1104 c1.4434-11.4824,2.1963-23.2969,2.1963-35.4341s-0.7529-23.9526-2.1963-35.4351h-10.1104 C889.1221,470.0381,889.9277,481.8467,889.9277,494.0005z") }
+      it "contains the same vertices" do
+        ["889.9277 -494.0005","887.6211 -529.4346","897.7315 -529.4346","899.9278 -494.0005","897.7315 -458.5654","887.6211 -458.5654","889.9277 -494.0005"].each do |vertex|
+          expect(path.to_multipolygon).to include(vertex)
+        end
       end
     end
   end

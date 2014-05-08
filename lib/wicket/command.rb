@@ -1,6 +1,6 @@
 module Wicket
   class Command
-    attr_reader :cursor_start
+    attr_reader :cursor_start, :x, :y
 
     class << self
       def from_code(code,arg_string,subpath)
@@ -29,6 +29,14 @@ module Wicket
       @subpath = subpath
     end
 
+    def cursor_end
+      if @absolute
+        Coordinate.new(x,y)
+      else
+        cursor_start.shift(@x,@y)
+      end
+    end
+
     def inspect
       "#<#{self.class.to_s} #{coordinates.map{|k,v|[k,v].join("=")}.join(",")}#{" abs" if @absolute}>"
     end
@@ -39,7 +47,7 @@ module Wicket
 
       private
         def inverse_values
-          [cursor_end[:x].to_s("F"), (cursor_end[:y] * -1).to_s("F")]
+          [cursor_end.x.to_s("F"), (cursor_end.y * -1).to_s("F")]
         end
   end
 end
