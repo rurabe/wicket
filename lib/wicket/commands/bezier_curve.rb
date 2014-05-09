@@ -3,7 +3,9 @@ module Wicket
     module BezierCurve
 
       def evaluate_curve(t)
-        Subpoint.new( *([:x,:y].map{|c| de_casteljau(c,t,*control_points) }),t,self )
+        x = de_casteljau(:x,t,*control_points)
+        y = de_casteljau(:y,t,*control_points)
+        Subpoint.new( x,y,t,self )
       end
 
       private
