@@ -2,17 +2,15 @@ module Wicket
   module Commands
     module BezierCurve
 
-      def linearize!
-        @subpoints.each_slice(2) do |(prev_sub,next_sub)|
-          # create the midpoint, and evaluate the angle created
-          # if the angle meets the threshold, add it to the subpoints array
-        end
-      end
-
       def evaluate_curve(t)
         Subpoint.new( *([:x,:y].map{|c| de_casteljau(c,t,*control_points) }),t,self )
       end
+
       private
+
+        def linearize!
+          smooth(*@subpoints)
+        end
 
         def de_casteljau(axis,t,*points)
           n = (points.length - 1)
@@ -23,6 +21,34 @@ module Wicket
 
         def choose(n,k)
           (0...k).inject(1){ |m,i| (m * (n - i)) / (i + 1) }
+        end
+
+        def smooth(p1,p2)
+          new_point = evaluate_curve((p1.t + p2.t)/2.0)
+          if point_needed?(p1,new_point,p2)
+            @subpoints << new_point
+            smooth(p1,new_point)
+            smooth(new_point,p2)
+          end
+        end
+
+        def point_needed?(p1,new_point,p2)
+          # is the angle more than the tolerance?
+          angle = evaluate_angle(p1,new_point,p2)
+          angle < ( 0.9 * Math::PI)
+        end
+
+        # This method evaluates the angle at p2 in radians (180 deg = pi)
+        def evaluate_angle(p1,p2,p3)
+          a = p2.distance_to(p1)
+          b = p2.distance_to(p3)
+          c = p1.distance_to(p3)
+          Math.acos((a**2 + b**2 - c**2)/(2 * a * b))
+        end
+
+        def init_subpoints
+          [ Subpoint.from_coordinate(@cursor_start,0,self),
+            Subpoint.from_coordinate(cursor_end,1,self) ]
         end
 
     end

@@ -16,18 +16,28 @@ module Wicket
         @x = x
         @y = y
         @subpoints = init_subpoints # Array
+        linearize!
       end
 
       def control_points
         [cursor_start,Coordinate.new(@c1x,@c1y),Coordinate.new(@c2x,@c2y),cursor_end]
       end
 
+      def proof
+        puts "<svg viewbox=\"#{@cursor_start.x - 10} #{@cursor_start.y - 10} #{@subpoints.max_by(&:x).x + 10} #{@subpoints.max_by(&:y).y + 10}\">"
+        puts "<path d=\"M#{@cursor_start.x} #{@cursor_start.y} C#{@c1x} #{@c1y} #{@c2x} #{@c2y} #{@x} #{@y}\" style=\"stroke:slateblue; fill:none;\"/>"
+
+        @subpoints.each do |sb|
+          puts "<circle cx=\"#{sb.x}\" cy=\"#{sb.y}\" r=\"2\" style=\"fill:turquoise \"/>"
+        end
+        @subpoints.sort_by(&:t).each_cons(2) do |(s1,s2)|
+          puts "<path d=\"M#{s1.x} #{s1.y}L#{s2.x} #{s2.y}\" style=\"stroke: lawngreen\"/>"
+        end
+        puts "</svg>"
+      end
+
       private
 
-        def init_subpoints
-          [ Subpoint.from_coordinate(@cursor_start,0,self),
-            Subpoint.from_coordinate(cursor_end,1,self) ]
-        end
     end
   end
 end
