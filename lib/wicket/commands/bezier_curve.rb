@@ -34,8 +34,8 @@ module Wicket
           end
         end
 
+        # is the angle more than the tolerance?
         def point_needed?(p1,new_point,p2)
-          # is the angle more than the tolerance?
           angle = evaluate_angle(p1,new_point,p2)
           angle < ( 0.9 * Math::PI)
         end

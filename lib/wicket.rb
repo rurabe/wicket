@@ -1,5 +1,7 @@
 require "bigdecimal"
 require "wicket/version"
+require "wicket/utilities"
+require "wicket/configuration"
 require "wicket/coordinate"
 require "wicket/subpoint"
 require "wicket/svg_path"
@@ -16,4 +18,12 @@ require "wicket/commands/s"
 
 
 module Wicket
+  class << self
+    attr_reader :configuration
+    def configure
+      @configuration ||= Configuration.new
+      yield(@configuration)
+    end
+  end
+  configure {}
 end
