@@ -1,10 +1,7 @@
 module Wicket
   module Commands
     class H < Command
-
-      def self.arg_count
-        1
-      end
+      ARGS = 1
 
       def initialize(absolute,cursor_start,x)
         @absolute = absolute

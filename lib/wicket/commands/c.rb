@@ -2,9 +2,7 @@ module Wicket
   module Commands
     class C < Command
       attr_reader :subpoints
-      def self.arg_count
-        6
-      end
+      ARGS = 6
 
       def initialize(absolute,cursor_start,c1x,c1y,c2x,c2y,x,y)
         @absolute = absolute
@@ -19,7 +17,7 @@ module Wicket
       end
 
       def linearize!
-        @subpoints.each_slice(2) do |(prev,next)|
+        @subpoints.each_slice(2) do |(prev_sub,next_sub)|
           # create the midpoint, and evaluate the angle created
           # if the angle meets the threshold, add it to the subpoints array
         end
