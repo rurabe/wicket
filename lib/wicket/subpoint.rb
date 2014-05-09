@@ -6,7 +6,7 @@ module Wicket
     end
 
     def distance_to(remote)
-      ((remote.x - x) ** 2 + (remote.y - y) ** 2) ** 0.5
+      Math.sqrt((remote.x - x) ** 2 + (remote.y - y) ** 2)
     end
 
     def siblings
