@@ -1,6 +1,7 @@
 module Wicket
   module Commands
     class C < Command
+      attr_reader :subpoints
       def self.arg_count
         6
       end
@@ -14,16 +15,18 @@ module Wicket
         @c2y = c2y
         @x = x
         @y = y
-        @subpoints = []
+        @subpoints = init_subpoints # Array
       end
 
-      # takes 3 coordinates in the form of {x: ..., y: ...}
-      def evaluate_angle(start,mid,finish)
-        
+      def linearize!
+        @subpoints.each_slice(2) do |(prev,next)|
+          # create the midpoint, and evaluate the angle created
+          # if the angle meets the threshold, add it to the subpoints array
+        end
       end
 
       def evaluate_curve(t)
-        Coordinate.new( *([:x,:y].map{|c| de_casteljau(c,t,*control_points) }) )
+        Subpoint.new( *([:x,:y].map{|c| de_casteljau(c,t,*control_points) }),t,self )
       end
 
       def control_points
@@ -41,6 +44,11 @@ module Wicket
 
         def choose(n,k)
           (0...k).inject(1){ |m,i| (m * (n - i)) / (i + 1) }
+        end
+
+        def init_subpoints
+          [ Subpoint.from_coordinate(@cursor_start,0,self),
+            Subpoint.from_coordinate(cursor_end,1,self) ]
         end
     end
   end

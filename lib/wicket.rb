@@ -1,6 +1,7 @@
 require "bigdecimal"
 require "wicket/version"
 require "wicket/coordinate"
+require "wicket/subpoint"
 require "wicket/svg_path"
 require "wicket/subpath"
 require "wicket/command"
