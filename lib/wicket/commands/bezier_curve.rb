@@ -29,11 +29,10 @@ module Wicket
 
         def smooth(point)
           if point_needed?(point)
-            p1 = new_point(point,point.previous_neighbor)
-            p2 = new_point(point,point.next_neighbor)
-            @subpoints.delete(point)
-            smooth(p1)
-            smooth(p2)
+            smooth(new_point(point,point.previous_neighbor))
+            if point_needed?(point)
+              smooth(new_point(point,point.next_neighbor))
+            end
           end
         end
 

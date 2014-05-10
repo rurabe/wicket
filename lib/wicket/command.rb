@@ -20,7 +20,7 @@ module Wicket
         def generate_commands(args,command_class,absolute,cursor_start,opts={})
           args.each_slice(command_class::ARGS).map do |slice| # slice them according to the number the code takes
             slice.map!{|arg| BigDecimal.new(arg.gsub(/\s*/,'')) } # remove whitespace and turn into a decimal
-            command_class.new(absolute,cursor_start,*slice,opts)
+            command_class.new(absolute,cursor_start,opts,*slice)
           end
         end
     end
