@@ -6,7 +6,7 @@ module Wicket
 
       include BezierCurve
 
-      def initialize(absolute,cursor_start,opts={},c1x,c1y,c2x,c2y,x,y)
+      def initialize(absolute,cursor_start,opts,c1x,c1y,c2x,c2y,x,y)
         @absolute = absolute
         @cursor_start = cursor_start
         @c1x = c1x
