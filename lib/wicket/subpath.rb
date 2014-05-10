@@ -7,7 +7,6 @@ module Wicket
 
     def add_command(*new_commands)
       new_commands.each do |c|
-        c.subpath = self
         @commands << c
       end
       self

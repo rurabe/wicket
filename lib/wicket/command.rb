@@ -9,18 +9,18 @@ module Wicket
         cursor_start = subpath.cursor_end # get the current position of the cursor
         args = arg_string.to_s.scan(/(?:\-\s*)?\d+(?:\.\d+)?/).flatten # parse out the numerical arguments
         if !args.empty?
-          generate_commands(args,command_class,absolute,cursor_start,opts)
+          generate_commands(args,command_class,absolute,cursor_start,subpath,opts)
         else # Must be a Z command
-          [command_class.new(absolute,cursor_start,opts)]
+          [command_class.new(absolute,cursor_start,subpath,opts)]
         end
       end
 
       private
 
-        def generate_commands(args,command_class,absolute,cursor_start,opts={})
+        def generate_commands(args,command_class,absolute,cursor_start,subpath,opts={})
           args.each_slice(command_class::ARGS).map do |slice| # slice them according to the number the code takes
             slice.map!{|arg| BigDecimal.new(arg.gsub(/\s*/,'')) } # remove whitespace and turn into a decimal
-            command_class.new(absolute,cursor_start,opts,*slice)
+            command_class.new(absolute,cursor_start,subpath,opts,*slice)
           end
         end
     end
@@ -39,10 +39,6 @@ module Wicket
 
     def cursor_end
       Coordinate.new(absolute_x,absolute_y)
-    end
-
-    def inspect
-      "#<#{self.class.to_s} x:#{@x},y:#{@y} #{" abs" if @absolute}>"
     end
 
     def to_wkt

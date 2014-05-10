@@ -3,12 +3,13 @@ module Wicket
     class L < Command
       ARGS = 2
 
-      def initialize(absolute,cursor_start,opts,x,y)
+      def initialize(absolute,cursor_start,subpath,opts,x,y)
         @absolute = absolute
         @cursor_start = cursor_start
+        @subpath = subpath
+        @opts = opts
         @x = x
         @y = y
-        @opts = opts
       end
 
     end
