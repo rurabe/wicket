@@ -10,8 +10,10 @@ module Wicket
 
       private
 
-        def linearize!
-          smooth(*@subpoints)
+        def linearized_curve
+          @subpoints = init_subpoints
+          smooth(new_point(*@subpoints))
+          @subpoints
         end
 
         def de_casteljau(axis,t,*points)
@@ -25,28 +27,28 @@ module Wicket
           (0...k).inject(1){ |m,i| (m * (n - i)) / (i + 1) }
         end
 
-        def smooth(p1,p2)
-          new_point = evaluate_curve((p1.t + p2.t)/2.0)
-          if point_needed?(p1,new_point,p2)
-            @subpoints << new_point
-            smooth(p1,new_point)
-            smooth(new_point,p2)
+        def smooth(point)
+          if point_needed?(point)
+            p1 = new_point(point,point.previous_neighbor)
+            p2 = new_point(point,point.next_neighbor)
+            @subpoints.delete(point)
+            smooth(p1)
+            smooth(p2)
           end
         end
 
         # is the angle more than the tolerance?
-        def point_needed?(p1,new_point,p2)
-          angle = evaluate_angle(p1,new_point,p2)
-          angle < ( 0.9 * Math::PI)
+        def point_needed?(point)
+          point.angle < Utilities.radians_tolerance(@opts)
         end
 
-        # This method evaluates the angle at p2 in radians (180 deg = pi)
-        def evaluate_angle(p1,p2,p3)
-          a = p2.distance_to(p1)
-          b = p2.distance_to(p3)
-          c = p1.distance_to(p3)
-          Math.acos((a**2 + b**2 - c**2)/(2 * a * b))
+        def new_point(point,neighbor)
+          evaluate_curve((point.t + neighbor.t)/2.0).tap do |np|
+            @subpoints << np
+          end
         end
+
+
 
         def init_subpoints
           [ Subpoint.from_coordinate(@cursor_start,0,self),

@@ -6,7 +6,7 @@ module Wicket
 
       include BezierCurve
 
-      def initialize(absolute,cursor_start,c1x,c1y,c2x,c2y,x,y)
+      def initialize(absolute,cursor_start,c1x,c1y,c2x,c2y,x,y,opts={})
         @absolute = absolute
         @cursor_start = cursor_start
         @c1x = c1x
@@ -15,8 +15,8 @@ module Wicket
         @c2y = c2y
         @x = x
         @y = y
-        @subpoints = init_subpoints # Array
-        linearize!
+        @opts = opts
+        @subpoints = linearized_curve # Array
       end
 
       def control_points

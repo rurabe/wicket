@@ -21,5 +21,21 @@ module Wicket
       siblings.select{|s| s.t > t }.min_by(&:t)
     end
 
+    def angle
+      evaluate_angle(previous_neighbor,self,next_neighbor) unless endpoint?
+    end
+
+    def endpoint?
+      t == 0 || t == 1
+    end
+
+    # This method evaluates the angle at p2 in radians (180 deg = pi)
+    def evaluate_angle(p1,p2,p3)
+      a = p2.distance_to(p1)
+      b = p2.distance_to(p3)
+      c = p1.distance_to(p3)
+      Math.acos((a**2 + b**2 - c**2)/(2 * a * b))
+    end
+
   end
 end

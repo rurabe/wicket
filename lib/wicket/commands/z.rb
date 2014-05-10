@@ -3,8 +3,9 @@ module Wicket
     class Z < Command
       ARGS = 1
 
-      def initialize(absolute,cursor_start)
+      def initialize(absolute,cursor_start,opts={})
         @cursor_start = cursor_start
+        @opts = opts
       end
 
       def cursor_end

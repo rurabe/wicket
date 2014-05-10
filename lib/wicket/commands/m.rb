@@ -3,11 +3,12 @@ module Wicket
     class M < Command
       ARGS = 2
 
-      def initialize(absolute,cursor_start,x,y)
+      def initialize(absolute,cursor_start,x,y,opts={})
         @absolute = absolute
+        @cursor_start = cursor_start
         @x = x
         @y = y
-        @cursor_start = cursor_start
+        @opts = opts
       end
 
     end

@@ -3,24 +3,24 @@ module Wicket
     attr_reader :cursor_start, :x, :y
 
     class << self
-      def from_code(code,arg_string,subpath)
+      def from_code(code,arg_string,subpath,opts={})
         command_class = Commands.const_get(code.upcase) # get the class which handles this code
         absolute = (code.upcase == code) # is it uppercase?
         cursor_start = subpath.cursor_end # get the current position of the cursor
         args = arg_string.to_s.scan(/(?:\-\s*)?\d+(?:\.\d+)?/).flatten # parse out the numerical arguments
         if !args.empty?
-          generate_commands(args,command_class,absolute,cursor_start)
+          generate_commands(args,command_class,absolute,cursor_start,opts)
         else # Must be a Z command
-          [command_class.new(absolute,cursor_start)]
+          [command_class.new(absolute,cursor_start,opts)]
         end
       end
 
       private
 
-        def generate_commands(args,command_class,absolute,cursor_start)
+        def generate_commands(args,command_class,absolute,cursor_start,opts={})
           args.each_slice(command_class::ARGS).map do |slice| # slice them according to the number the code takes
             slice.map!{|arg| BigDecimal.new(arg.gsub(/\s*/,'')) } # remove whitespace and turn into a decimal
-            command_class.new(absolute,cursor_start,*slice)
+            command_class.new(absolute,cursor_start,*slice,opts)
           end
         end
     end
