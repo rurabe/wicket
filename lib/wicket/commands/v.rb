@@ -15,6 +15,10 @@ module Wicket
         cursor_start.x
       end
 
+      def to_svg
+        "V #{absolute_y}"
+      end
+
     end
   end
 end

@@ -2,8 +2,8 @@ module Wicket
   module Commands
     class C < Command
       ARGS = 6
-
       include BezierCurve
+      include CubicBezier
 
       def initialize(absolute,cursor_start,subpath,opts,c1x,c1y,c2x,c2y,x,y)
         @absolute = absolute
@@ -18,22 +18,6 @@ module Wicket
         @y = y
       end
 
-      def control_points
-        [cursor_start,c1,c2,cursor_end]
-      end
-
-      def to_svg
-        "L #{subpoints.reject{|s| s.t == 0}.map(&:to_svg).join(" ")}"
-      end
-
-        private
-          def c1
-            @absolute ? Coordinate.new(@c1x,@c1y) : cursor_start.absolutize(@c1x,@c1y)
-          end
-
-          def c2
-            @absolute ? Coordinate.new(@c2x,@c2y) : cursor_start.absolutize(@c2x,@c2y)
-          end
 
     end
   end

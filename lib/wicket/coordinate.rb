@@ -8,5 +8,14 @@ module Wicket
       self.class.new(x + delta_x , y + delta_y)
     end
 
+    def relativize(remote)
+      [remote.x - x, remote.y - y]
+    end
+
+    def reflect(remote)
+      x,y = relativize(remote)
+      absolutize(-x,-y)
+    end
+
   end
 end

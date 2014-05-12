@@ -8,9 +8,14 @@ module Wicket
         [x,y,t]
       end
 
-      def to_wkt(output_opts={})
-        opts = Wicket.configuration.merge(@opts,output_opts)
+      def to_wkt(opts={})
+        opts = Wicket.configuration.merge(@opts,opts)
         subpoints(opts).reject{|s| s.t == 0 }.map(&:to_wkt).join(",")
+      end
+
+      def to_svg(opts={})
+        opts = Wicket.configuration.merge(@opts,opts)
+        "L #{subpoints(opts).reject{|s| s.t == 0}.map(&:to_svg).join(" ")}"
       end
 
       private

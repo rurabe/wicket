@@ -14,6 +14,10 @@ module Wicket
       def absolute_y
         @cursor_start.y
       end
+
+      def to_svg(opts={})
+        "H #{absolute_x}"
+      end
     end
   end
 end
