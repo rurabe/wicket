@@ -11,7 +11,7 @@ module Wicket
 
     def to_svg
       [x,y].map{|a| a.to_s("F")}.join(",")
-    end
+    end 
 
   end
 end

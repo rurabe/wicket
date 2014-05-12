@@ -27,6 +27,7 @@ module Wicket
         end
 
         def de_casteljau(axis,t,*points)
+          points
           n = (points.length - 1)
           points.each_with_index.inject(0) do |m,(p,i)|
             m + ( choose(n,i) * ((1-t) ** (n-i)) * (t ** i) * p.send(axis))
@@ -34,7 +35,7 @@ module Wicket
         end
 
         def choose(n,k)
-          (0...k).inject(1){ |m,i| (m * (n - i)) / (i + 1) }
+          (0...k).inject(1){ |m,i| (m * (n - i)) / (i + 1) }.to_d
         end
 
         def smooth(points,point,opts)

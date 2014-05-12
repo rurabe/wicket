@@ -1,4 +1,5 @@
 require "bigdecimal"
+require 'bigdecimal/util'
 require "wicket/version"
 require "wicket/utilities"
 require "wicket/cartesian"
