@@ -2,8 +2,8 @@ module Wicket
   module Utilities
     class << self
       def radians_tolerance(opts={})
-        t = opts[:curve_tolerance]
-        case opts[:curve_tolerance_unit] || determine_tolerance(t)
+        t = opts[:min_angle]
+        case opts[:min_angle_unit] || determine_tolerance(t)
         when nil,:radians 
           check_range(Math::PI,t)
           t
