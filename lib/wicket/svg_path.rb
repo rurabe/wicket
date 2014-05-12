@@ -1,6 +1,6 @@
 module Wicket
   class SVGPath
-    attr_reader :text
+    attr_reader :text, :subpaths
     def initialize(text,opts={})
       @text = text
       @opts = Wicket.configuration.merge(opts)
@@ -20,7 +20,12 @@ module Wicket
 
     def to_svg(style="fill:none;stroke:lawngreen")
       paths = @subpaths.map(&:to_svg).join(" ")
-      "<svg><path d=\"#{paths}\" style=\"#{style}\" stroke-weight=\"2\"/></svg>"
+      <<-SVG
+        <svg>
+          <path d="#{@text}" style="fill: slateblue; opacity:0.2"/>
+          <path d="#{paths}" style="#{style}" stroke-weight="2"/>
+        </svg>
+      SVG
     end
 
     private
