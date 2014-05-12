@@ -10,6 +10,7 @@ require "wicket/svg_path"
 require "wicket/subpath"
 require "wicket/commands/bezier_curve"
 require "wicket/commands/cubic_bezier"
+require "wicket/commands/quadratic_bezier"
 require "wicket/command"
 require "wicket/commands/m"
 require "wicket/commands/l"
@@ -18,6 +19,8 @@ require "wicket/commands/h"
 require "wicket/commands/v"
 require "wicket/commands/c"
 require "wicket/commands/s"
+require "wicket/commands/q"
+require "wicket/commands/t"
 
 
 module Wicket

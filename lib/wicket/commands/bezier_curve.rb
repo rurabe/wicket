@@ -63,6 +63,14 @@ module Wicket
             Subpoint.from_coordinate(cursor_end,1,a)
           end
         end
+
+        def set_implicit_control_point!
+          if @absolute
+            @c1x,@c1y = implied_c1.x,implied_c1.y
+          else
+            @c1x,@c1y = @cursor_start.relativize(implied_c1)
+          end
+        end
     end
   end
 end

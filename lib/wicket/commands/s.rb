@@ -2,7 +2,6 @@ module Wicket
   module Commands
     class S < Command
       ARGS = 4
-      include BezierCurve
       include CubicBezier
 
       def initialize(absolute,cursor_start,subpath,opts,c2x,c2y,x,y)
@@ -18,27 +17,20 @@ module Wicket
       end
 
       private
-        def set_implicit_control_point!
-          if @absolute
-            @c1x,@c1y = implied_c1.x,implied_c1.y
-          else
-            @c1x,@c1y = @cursor_start.relativize(implied_c1)
-          end
-        end
 
+        # > The first control point is assumed to be the reflection of the second
+        # > control point on the previous command relative to the current point.
+        # > (If there is no previous command or if the previous command was not an
+        # > C, c, S or s, assume the first control point is coincident with the 
+        # > current point.)
+        # > http://www.w3.org/TR/SVG11/paths.html#PathDataCubicBezierCommands
         def implied_c1
           last = @subpath.last_command
           case last 
-          when C,S
-            @cursor_start.reflect(last.c2)
-          else 
-            @cursor_start
+          when C,S then @cursor_start.reflect(last.c2)
+          else @cursor_start
           end 
         end
-
-
-
-
     end
   end
 end
