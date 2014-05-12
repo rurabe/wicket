@@ -19,12 +19,21 @@ module Wicket
       end
 
       def control_points
-        [cursor_start,Coordinate.new(@c1x,@c1y),Coordinate.new(@c2x,@c2y),cursor_end]
+        [cursor_start,c1,c2,cursor_end]
       end
 
       def to_svg
-        "L #{subpoints.reject{|s| s.t == 0}.sort_by(&:t).map(&:to_svg).join(" ")}"
+        "L #{subpoints.reject{|s| s.t == 0}.map(&:to_svg).join(" ")}"
       end
+
+        private
+          def c1
+            @absolute ? Coordinate.new(@c1x,@c1y) : cursor_start.absolutize(@c1x,@c1y)
+          end
+
+          def c2
+            @absolute ? Coordinate.new(@c2x,@c2y) : cursor_start.absolutize(@c2x,@c2y)
+          end
 
     end
   end

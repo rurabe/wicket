@@ -18,7 +18,7 @@ module Wicket
         def subpoints(opts)
           points = init_subpoints
           smooth(points,new_point(points,*points),opts)
-          points
+          points.sort_by(&:t)
         end
 
         def de_casteljau(axis,t,*points)
