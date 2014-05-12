@@ -30,7 +30,6 @@ module Wicket
           last = @subpath.last_command
           case last 
           when C,S
-                      binding.pry
             @cursor_start.reflect(last.c2)
           else 
             @cursor_start
