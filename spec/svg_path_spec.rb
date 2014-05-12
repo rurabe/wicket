@@ -124,12 +124,27 @@ module Wicket
       end
     end
 
-    context "relative c curves" do
+    context "absolute c curves" do
       let(:path){ SVGPath.new("M0 0,c0 200,200 200,200 0z") }
+      let(:wkt){ "0.0 -0.0,200.0 -0.0,100.0 -150.0,31.25 -112.5,8.59375 -65.625,2.24609375 -35.15625,0.57373046875 -18.1640625,18.45703125 -91.40625,13.12255859375 -79.1015625,63.28125 -140.625,46.38671875 -128.90625,38.56201171875 -121.2890625,54.65087890625 -135.3515625,81.34765625 -147.65625,72.20458984375 -144.7265625,90.63720703125 -149.4140625,168.75 -112.5,136.71875 -140.625,118.65234375 -147.65625,109.36279296875 -149.4140625,127.79541015625 -144.7265625,153.61328125 -128.90625,145.34912109375 -135.3515625,161.43798828125 -121.2890625,191.40625 -65.625,181.54296875 -91.40625,175.47607421875 -102.5390625,197.75390625 -35.15625,195.05615234375 -50.9765625,0.0 -0.0" }
 
-      # it "parses the first subpath to polygon" do
-      #   expect(path.to_polygon).to eq("POLYGON((0 0,100 150,0 0))")
-      # end
+      it "parses the first subpath to polygon" do
+        expect(path.to_polygon).to eq("POLYGON((#{wkt}))")
+      end
+
+      it "parses to a multipolygon" do
+        expect(path.to_multipolygon).to eq("MULTIPOLYGON(((#{wkt})))")
+      end
+
+      it "allows you to make a lower resolution curve" do
+        path = SVGPath.new("M0 0,c0 200,200 200,200 0z")
+        expect(path.to_polygon(:curve_tolerance => 150).length).to be < wkt.length
+      end
+
+      it "allows you to make a higher resolution curve" do
+        path = SVGPath.new("M0 0,c0 200,200 200,200 0z")
+        expect(path.to_polygon(:curve_tolerance => 175).length).to be > wkt.length
+      end
     end
 
     context "a complex curve" do

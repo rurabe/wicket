@@ -1,6 +1,7 @@
 require "bigdecimal"
 require "wicket/version"
 require "wicket/utilities"
+require "wicket/cartesian"
 require "wicket/configuration"
 require "wicket/coordinate"
 require "wicket/subpoint"

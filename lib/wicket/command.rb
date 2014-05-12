@@ -41,13 +41,21 @@ module Wicket
       Coordinate.new(absolute_x,absolute_y)
     end
 
-    def to_wkt
-      inverse_values.join(" ")
+    def to_wkt(opts={})
+      cursor_end.to_wkt
     end
 
-      private
-        def inverse_values
-          [cursor_end.x.to_s("F"), (cursor_end.y * -1).to_s("F")]
-        end
+    def to_svg
+      [letter,cursor_end.to_svg].join("")
+    end
+
+    private
+
+      def letter
+        self.class.to_s.match(/\:\:([^\:]+)$/)[1]
+      end
+
+
+
   end
 end

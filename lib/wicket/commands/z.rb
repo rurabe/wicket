@@ -12,6 +12,10 @@ module Wicket
       def cursor_end
         @subpath.first_command.cursor_end
       end
+
+      def to_svg
+        "Z"
+      end
     end
   end
 end 

@@ -22,8 +22,8 @@ module Wicket
       @commands.last.class == Commands::Z
     end
 
-    def to_polygon
-      vertices = commands.map(&:to_wkt).join(",")
+    def to_polygon(opts)
+      vertices = commands.map{|c| c.to_wkt(opts) }.join(",")
       "((#{vertices}))"
     end
 
@@ -33,6 +33,10 @@ module Wicket
 
     def first_command
       @commands.first
+    end
+
+    def to_svg
+      @commands.map(&:to_svg).join(" ")
     end
   end
 end

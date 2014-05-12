@@ -3,19 +3,24 @@ module Wicket
     attr_reader :text
     def initialize(text,opts={})
       @text = text
-      @opts = default_opts.merge(opts)
+      @opts = Wicket.configuration.merge(opts)
       @subpaths = []
       parse
     end
 
-    def to_polygon
-      poly = @subpaths.first.to_polygon
+    def to_polygon(opts={})
+      poly = @subpaths.first.to_polygon(opts)
       "POLYGON#{poly}"
     end
 
-    def to_multipolygon
-      polys = @subpaths.map(&:to_polygon).join(",")
+    def to_multipolygon(opts={})
+      polys = @subpaths.map{|s| s.to_polygon(opts) }.join(",")
       "MULTIPOLYGON(#{polys})"
+    end
+
+    def to_svg(style="fill:none;stroke:lawngreen")
+      paths = @subpaths.map(&:to_svg).join(" ")
+      "<svg><path d=\"#{paths}\" style=\"#{style}\" stroke-weight=\"2\"/></svg>"
     end
 
     private
