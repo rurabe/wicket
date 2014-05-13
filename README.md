@@ -15,7 +15,6 @@ Notable features include:
 
 Future possible features could include:
 - The arc "A" command
-- Specifying a maximum level of precision to express decimals in
 - Translating non closed paths into Linestrings and Multilines
 - Specifying paths for polygons which are exlcusions from the area (donut holes)
 - Translating WKT to SVG (although PostGIS already does this)
@@ -149,6 +148,20 @@ path.to_polygon
   # => "POLYGON((10 -10,35 -53,60 -85,72 -95,85 -103,97 -108,110 -110,122 -108,135 -103,147 -95,160 -85,185 -53,210 -10,10 -10))"
 path.to_multipolygon # both subpaths
   # => "MULTIPOLYGON(((10 -10,35 -53,60 -85,72 -95,85 -103,97 -108,110 -110,122 -108,135 -103,147 -95,160 -85,185 -53,210 -10,10 -10)))
+
+```
+
+## Debugging/Proof
+
+Because this is all pretty hard to keep track of in your head, you can call `#to_svg` on any path, and it will output a SVG of your original path in blue and a representation of the WKT in green for visual comparison, ready to paste into a page or JSFiddle or something. You may have to adjust the viewbox to make sure the path is visible. `#to_svg` takes all the same parameters as `#to_polygon`.
+
+```ruby
+path = Wicket::SVGPath.new("M0 0,C0 200,200 200,200 0z")
+puts path.to_svg
+  # <svg>
+  #   <path d="M0 0,C0 200,200 200,200 0z" style="fill: slateblue; opacity:0.2"/>
+  #   <path d="M0,0 L 2,35 8,65 31,112 46,128 63,140 81,147 100,150 118,147 136,140 153,128 168,112 181,91 191,65 200,0 Z" style="fill:none;stroke:lawngreen" stroke-weight="2"/>
+  # </svg>
 
 ```
 
