@@ -27,7 +27,6 @@ module Wicket
         end
 
         def de_casteljau(axis,t,*points)
-          points
           n = (points.length - 1)
           points.each_with_index.inject(0) do |m,(p,i)|
             m + ( choose(n,i) * ((1-t) ** (n-i)) * (t ** i) * p.send(axis))
