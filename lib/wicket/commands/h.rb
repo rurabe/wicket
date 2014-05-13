@@ -2,6 +2,7 @@ module Wicket
   module Commands
     class H < Command
       ARGS = 1
+      ARG_LIST = [:x]
 
       def initialize(absolute,cursor_start,subpath,opts,x)
         @absolute = absolute
@@ -16,7 +17,8 @@ module Wicket
       end
 
       def to_svg(opts={})
-        "H #{absolute_x}"
+        o = @opts.merge(opts)
+        "H #{Utilities.format(absolute_x,o)}"
       end
     end
   end

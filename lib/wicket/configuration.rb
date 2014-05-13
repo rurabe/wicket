@@ -7,7 +7,7 @@ module Wicket
     attr_accessor *SETTINGS
 
     def initialize
-      @min_angle = 3.0
+      @min_angle = 165
     end
 
     def merge(*opts)

@@ -3,6 +3,7 @@ module Wicket
     class S < Command
       ARGS = 4
       include CubicBezier
+      ARG_LIST = [:c2x,:c2y,:x,:y]
 
       def initialize(absolute,cursor_start,subpath,opts,c2x,c2y,x,y)
         @absolute = absolute

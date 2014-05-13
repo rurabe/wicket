@@ -2,6 +2,7 @@ module Wicket
   module Commands
     class L < Command
       ARGS = 2
+      ARG_LIST = [:x,:y]
 
       def initialize(absolute,cursor_start,subpath,opts,x,y)
         @absolute = absolute

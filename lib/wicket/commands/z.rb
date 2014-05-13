@@ -2,6 +2,7 @@ module Wicket
   module Commands
     class Z < Command
       ARGS = 1
+      ARG_LIST = []
 
       def initialize(absolute,cursor_start,subpath,opts)
         @cursor_start = cursor_start

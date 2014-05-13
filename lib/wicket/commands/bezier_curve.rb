@@ -9,13 +9,13 @@ module Wicket
       end
 
       def to_wkt(opts={})
-        opts = Wicket.configuration.merge(@opts,opts)
-        subpoints(opts).reject{|s| s.t == 0 }.map(&:to_wkt).join(",")
+        o = @opts.merge(opts)
+        subpoints(o).reject{|s| s.t == 0 }.map{|s| s.to_wkt(o) }.join(",")
       end
 
       def to_svg(opts={})
-        opts = Wicket.configuration.merge(@opts,opts)
-        "L #{subpoints(opts).reject{|s| s.t == 0}.map(&:to_svg).join(" ")}"
+        o = @opts.merge(opts)
+        "L #{subpoints(o).reject{|s| s.t == 0}.map{|s| s.to_svg(o) }.join(" ")}"
       end
 
       private

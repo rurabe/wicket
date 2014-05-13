@@ -3,6 +3,7 @@ module Wicket
     class T < Command
       ARGS = 2
       include QuadraticBezier
+      ARG_LIST = [:x,:y]
 
       def initialize(absolute,cursor_start,subpath,opts,x,y)        
         @absolute = absolute

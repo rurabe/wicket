@@ -5,13 +5,19 @@ module Wicket
       Math.sqrt((remote.x - x) ** 2 + (remote.y - y) ** 2)
     end
 
-    def to_wkt
-      [x.to_s("F"),(y * -1).to_s("F")].join(" ")
+    def to_wkt(o={})
+      [format(x,o),format((y * -1),o)].join(" ")
     end
 
-    def to_svg
-      [x,y].map{|a| a.to_s("F")}.join(",")
+    def to_svg(o={})
+      [x,y].map{|a| format(a,o)}.join(",")
     end 
+
+    private
+
+      def format(n,opts={})
+        Utilities.format(n,opts)
+      end
 
   end
 end

@@ -10,11 +10,11 @@ module Wicket
       context(title) do
         let(:path){ SVGPath.new(data["path"]) }
         it "parses to polygon" do
-          expect(path.to_polygon(:min_angle => 3)).to eq("POLYGON#{wkts.first}")
+          expect(path.to_polygon(:min_angle => 165)).to eq("POLYGON#{wkts.first}")
         end
 
         it "parses to a multipolygon" do
-          expect(path.to_multipolygon(:min_angle => 3)).to eq("MULTIPOLYGON(#{wkts.join(",")})")
+          expect(path.to_multipolygon(:min_angle => 165)).to eq("MULTIPOLYGON(#{wkts.join(",")})")
         end
       end
     end
@@ -29,7 +29,7 @@ module Wicket
       let(:wkt){ path.to_polygon(:min_angle => 160) }
 
       it "contains the vertices" do
-        ["0.0 -0.0","200.0 -0.0"].each do |vertex|
+        ["0 0","200 0"].each do |vertex|
           expect(path.to_multipolygon).to include(vertex)
         end
       end

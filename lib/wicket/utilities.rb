@@ -19,6 +19,15 @@ module Wicket
         end
       end
 
+      def format(n,opts={})
+        s = scale(opts)
+        if s == 0 
+          n.to_i.to_s
+        else
+          n.round(s).to_s("F")
+        end
+      end
+
       private
 
         def determine_tolerance(t)
@@ -41,6 +50,10 @@ module Wicket
 
         def raise_error(lower,upper)
           raise ArgumentError.new("Tolerance must be greater than #{lower} and less than #{upper}")
+        end
+
+        def scale(o={})
+          o[:scale] || o[:_scale]
         end
     end
   end
