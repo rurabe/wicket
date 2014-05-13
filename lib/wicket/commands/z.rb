@@ -14,7 +14,7 @@ module Wicket
         @subpath.first_command.cursor_end
       end
 
-      def to_svg
+      def to_svg(opts={})
         "Z"
       end
     end

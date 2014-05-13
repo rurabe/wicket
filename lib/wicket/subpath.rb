@@ -35,8 +35,8 @@ module Wicket
       @commands.first
     end
 
-    def to_svg
-      @commands.map(&:to_svg).join(" ")
+    def to_svg(opts={})
+      @commands.map{|c| c.to_svg(opts) }.join(" ")
     end
   end
 end

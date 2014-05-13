@@ -18,8 +18,9 @@ module Wicket
       "MULTIPOLYGON(#{polys})"
     end
 
-    def to_svg(style="fill:none;stroke:lawngreen")
-      paths = @subpaths.map(&:to_svg).join(" ")
+    def to_svg(opts={},style="fill:none;stroke:lawngreen")
+      o = @opts.merge(opts)
+      paths = @subpaths.map{|s| s.to_svg(o) }.join(" ")
       <<-SVG
         <svg>
           <path d="#{@text}" style="fill: slateblue; opacity:0.2"/>

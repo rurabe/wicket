@@ -10,9 +10,11 @@ Notable features include:
 - Inversing Y axis measurements (SVG y coordinates decrease as you go up)
 - Translates quadratic and cubic curve commands into straight line segments
 - Curve definition translation controls
+- Numeric precision controls
 - Decimal math for increased accuracy
 
 Future possible features could include:
+- The arc "A" command
 - Specifying a maximum level of precision to express decimals in
 - Translating non closed paths into Linestrings and Multilines
 - Specifying paths for polygons which are exlcusions from the area (donut holes)
@@ -99,6 +101,19 @@ There are currently two configuration options:
 
   This option accepts the same four arguments as above: `decimal_percentage`,`radians`, `percentage`, and `degrees`
 
+3. `scale`
+  
+  This is the number of digits allowed after the decimal point, exactly as you would in a Rails migration for a decimal column. Note that this is only used for formatting, all calculations are done to the maximum possible precision.
+
+  If scale is omitted, Wicket will use the greatest scale of all the input points provided. Thus:
+  
+  ```
+  "M0,0H100V100H0z" # => 0 scale
+  "M0,0H100V100H0.0z" # => 1 scale
+  "M0,0H100V100H0.00z" # => 2 scale
+  "M0.000,0H100V100H0.00z" # => 3 scale
+  ```
+
 ## Usage
 
 ### Linear paths
@@ -106,39 +121,48 @@ There are currently two configuration options:
 # one subpath
 path = Wicket::SVGPath.new("M10 10H20l10 10H10z")
 path.to_polygon 
-  # => "POLYGON((10.0 -10.0,20.0 -10.0,30.0 -20.0,10.0 -20.0,10.0 -10.0))"
+  # => "POLYGON((10 -10,20 -10,30 -20,10 -20,10 -10))"
 path.to_multipolygon 
-  # => "MULTIPOLYGON(((10.0 -10.0,30.0 -10.0,40.0 -10.0,50.0 -20.0,40.0 -20.0,10.0 -10.0)))"
+  # => "MULTIPOLYGON(((10 -10,20 -10,30 -20,10 -20,10 -10)))"
 
 # two subpaths
 path = Wicket::SVGPath.new("M10 10H20l10 10H10z M100 100h10v10h-10z")
 path.to_polygon # ONLY THE FIRST SUBPATH!
-  # => "POLYGON((10.0 -10.0,20.0 -10.0,30.0 -20.0,10.0 -20.0,10.0 -10.0))"
+  # => "POLYGON((10 -10,20 -10,30 -20,10 -20,10 -10))"
 path.to_multipolygon # both subpaths
-  # => "MULTIPOLYGON(((10.0 -10.0,30.0 -10.0,40.0 -10.0,50.0 -20.0,40.0 -20.0,10.0 -10.0)),((100 -100,110 -100,110 -110,100 -110,100 -100)))
+  # => "MULTIPOLYGON(((10 -10,30 -10,40 -10,50 -20,40 -20,10 -10)),((100 -100,110 -100,110 -110,100 -110,100 -100)))
 
 ```
 
 ### Curved paths
 ```ruby
-# one subpath
-path = Wicket::SVGPath.new("M10 10H20l10 10H10z")
+# cubic
+path = Wicket::SVGPath.new("M100 100,c0 200,200 200,200 0z")
 path.to_polygon 
-  # => "POLYGON((10.0 -10.0,20.0 -10.0,30.0 -20.0,10.0 -20.0,10.0 -10.0))"
+  # => "POLYGON((100 -100,102 -135,108 -165,131 -212,146 -228,163 -240,181 -247,200 -250,218 -247,236 -240,253 -228,268 -212,281 -191,291 -165,300 -100,100 -100))"
 path.to_multipolygon 
-  # => "MULTIPOLYGON(((10.0 -10.0,30.0 -10.0,40.0 -10.0,50.0 -20.0,40.0 -20.0,10.0 -10.0)))"
+  # => "MULTIPOLYGON(((100 -100,102 -135,108 -165,131 -212,146 -228,163 -240,181 -247,200 -250,218 -247,236 -240,253 -228,268 -212,281 -191,291 -165,300 -100,100 -100)))"
 
-# two subpaths
-path = Wicket::SVGPath.new("M10 10H20l10 10H10z M100 100h10v10h-10z")
-path.to_polygon # ONLY THE FIRST SUBPATH!
-  # => "POLYGON((10.0 -10.0,20.0 -10.0,30.0 -20.0,10.0 -20.0,10.0 -10.0))"
+# quadratic
+path = Wicket::SVGPath.new("M10 10,Q110 210 210 10z")
+path.to_polygon
+  # => "POLYGON((10 -10,35 -53,60 -85,72 -95,85 -103,97 -108,110 -110,122 -108,135 -103,147 -95,160 -85,185 -53,210 -10,10 -10))"
 path.to_multipolygon # both subpaths
-  # => "MULTIPOLYGON(((10.0 -10.0,30.0 -10.0,40.0 -10.0,50.0 -20.0,40.0 -20.0,10.0 -10.0)),((100 -100,110 -100,110 -110,100 -110,100 -100)))
+  # => "MULTIPOLYGON(((10 -10,35 -53,60 -85,72 -95,85 -103,97 -108,110 -110,122 -108,135 -103,147 -95,160 -85,185 -53,210 -10,10 -10)))
 
 ```
 
 ## Gotchas
 
+- Be careful when using curves that you have an appropriate scale set for the magnitude of the numbers you are using. If you are dealing with small numbers, curves, and your inputs are integers, all the points will be rounded to integers. You probably don't want that.
+
+  ```ruby
+  path = Wicket::SVGPath.new("M0,0Q1,1,2,0z")
+  path.to_polygon # probably not what you want
+    # => "POLYGON((0 0,0 0,0 0,0 0,1 0,1 0,1 0,1 0,2 0,0 0))"
+  path.to_polygon(scale: 4) # much better
+    # => "POLYGON((0.0 -0.0,0.25 -0.2188,0.5 -0.375,0.75 -0.4688,1.0 -0.5,1.25 -0.4688,1.5 -0.375,1.75 -0.2188,2.0 -0.0,0.0 -0.0))"
+  ```
 - Wicket assumes that a move command (M or m) is part of the polygon edge. It just so happened that a lot of the data I was working with when creating this project was formatted that way. If your cursor moves around a lot and does not intend to define these as edges, be aware.
 - Polygons are assumed to have no holes, thus everything inside the path is part of the polygon.
 - Each polygon is represented by a subpath. A subpath continues until it is closed by a Z command. Multiple subpaths are represented as individual elements in `#to_multipolygon`, whereas only the first subpath is represented in `#to_polygon`. Make sure your data does not include multiple subpaths if using the `#to_polygon` method.
