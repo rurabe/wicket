@@ -17,5 +17,9 @@ module Wicket
       absolutize(-x,-y)
     end
 
+    def ==(other)
+      self.x == other.x && self.y == other.y
+    end
+
   end
 end

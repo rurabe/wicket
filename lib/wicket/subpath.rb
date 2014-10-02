@@ -23,7 +23,7 @@ module Wicket
     end
 
     def to_polygon(opts)
-      vertices = commands.map{|c| c.to_wkt(opts) }.join(",")
+      vertices = commands.map{|c| c.to_wkt(opts) }.compact.join(",")
       "((#{vertices}))"
     end
 

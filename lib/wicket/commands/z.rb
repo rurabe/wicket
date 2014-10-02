@@ -17,6 +17,11 @@ module Wicket
       def to_svg(opts={})
         "Z"
       end
+
+      def to_wkt(o={})
+        return nil if @cursor_start == cursor_end
+        super(o)
+      end
     end
   end
 end 
