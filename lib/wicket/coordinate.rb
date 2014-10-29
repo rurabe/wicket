@@ -21,5 +21,9 @@ module Wicket
       self.x == other.x && self.y == other.y
     end
 
+    def inspect
+      "{x: #{self.x.to_f},y: #{self.y.to_f}}"
+    end
+
   end
 end
