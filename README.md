@@ -68,7 +68,7 @@ Wicket::SVGPath.new("M10 10H20l10 10H10z",
 
 ### Configuration Options
 
-There are currently two configuration options:
+There are currently three configuration options:
 
 1. `min_angle`
 
