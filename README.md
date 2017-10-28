@@ -186,3 +186,4 @@ puts path.to_svg
 If you have a path that you think is being mistranslated, please submit a pull request with your path added to `spec/test_cases.yml`, and if possible, the fix.
 
 Otherwise, submit a pull request for any other feature.
+
